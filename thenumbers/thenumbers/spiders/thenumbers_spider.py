@@ -18,9 +18,12 @@ class ThenumbersSpider(Spider):
         for i in range(2,102):
             release_year = response.xpath('.//div[@id="page_filling_chart"]/center/table//tr[{}]//td/a/text()'.format(i)).extract_first()[-4:] 
             name = response.xpath('.//div[@id="page_filling_chart"]/center/table//tr[{}]//td/b/a/text()'.format(i)).extract_first()
-            production_budget = response.xpath('.//div[@id="page_filling_chart"]/center/table//tr[{}]//td[4]/text()'.format(i)).extract_first()  
+            production_budget = response.xpath('.//div[@id="page_filling_chart"]/center/table//tr[{}]//td[4]/text()'.format(i)).extract_first()
+            production_budget = int(production_budget.replace('$','').replace(',','').strip())    
             domestic = response.xpath('.//div[@id="page_filling_chart"]/center/table//tr[{}]//td[5]/text()'.format(i)).extract_first() 
+            domestic = int(domestic.replace('$','').replace(',','').strip())
             worldwide = response.xpath('.//div[@id="page_filling_chart"]/center/table//tr[{}]//td[6]/text()'.format(i)).extract_first() 
+            worldwide = int(worldwide.replace('$','').replace(',','').strip())
 
             item = ThenumbersItem()
 

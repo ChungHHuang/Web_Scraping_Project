@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for boxofficemojo project
+# Scrapy settings for rottentomatoes project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,10 +9,10 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'boxofficemojo'
+BOT_NAME = 'rottentomatoes'
 
-SPIDER_MODULES = ['boxofficemojo.spiders']
-NEWSPIDER_MODULE = 'boxofficemojo.spiders'
+SPIDER_MODULES = ['rottentomatoes.spiders']
+NEWSPIDER_MODULE = 'rottentomatoes.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -47,13 +47,13 @@ DOWNLOAD_DELAY = 1
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'boxofficemojo.middlewares.BoxofficemojoSpiderMiddleware': 543,
+#    'rottentomatoes.middlewares.RottentomatoesSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'boxofficemojo.middlewares.BoxofficemojoDownloaderMiddleware': 543,
+#    'rottentomatoes.middlewares.RottentomatoesDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ DOWNLOAD_DELAY = 1
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'boxofficemojo.pipelines.WriteItemPipeline': 200,
+    'rottentomatoes.pipelines.WriteItemPipeline': 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

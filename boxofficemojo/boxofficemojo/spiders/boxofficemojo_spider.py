@@ -6,13 +6,13 @@ import re
 class BoxofficemojoSpider(Spider):
     name = 'boxofficemojo_spider'
     allowed_urls = ['https://www.boxofficemojo.com']
-    start_urls = ['https://www.boxofficemojo.com/yearly/?view2=worldwide&view=releasedate&p=.htm']
+    start_urls = ['https://www.boxofficemojo.com/yearly/?view2=domestic&view=releasedate&p=.htm']
 
     def parse(self, response):
         num_years = len(response.xpath('//table[@cellspacing="1"]//tr')) - 1
         current_year = datetime.datetime.now().year  # Use datetime module to get current year
         # Find the url of yearly boxoffice for each year
-        url_list = ['https://www.boxofficemojo.com/yearly/chart/?view2=worldwide&yr={}&p=.htm'.format(i) for i in range(current_year,current_year-num_years,-1)]
+        url_list = ['https://www.boxofficemojo.com/yearly/chart/?yr={}&p=.htm'.format(i) for i in range(current_year,current_year-num_years,-1)]
         for url in url_list:
             yield Request(url = url, callback = self.parse_year_page)
 
@@ -26,7 +26,7 @@ class BoxofficemojoSpider(Spider):
         # print(len(movie_urls))
         # print('='*50)
 
-        for url in movie_urls[1:101]:
+        for url in movie_urls:
             yield Request(url=url, callback=self.parse_detail_page)
 
     def parse_detail_page(self, response):
@@ -42,17 +42,17 @@ class BoxofficemojoSpider(Spider):
 
 
         gross = response.xpath('.//div[@class="mp_box_content"]/table//tr/td[2]/b/text()').extract()
-        domestic = int(''.join(gross[0][1:].split(',')))
-        worldwide = int(''.join(gross[1][1:].split(',')))
+        domestic = ''.join(gross[0][1:].split(','))
+        worldwide = ''.join(gross[1][1:].split(','))
         top_table = response.xpath('//table[@cellpadding="4"]') 
         distributor = top_table.xpath('.//tr[2]/td/b/a/text()').extract_first()
         release_year = top_table.xpath('.//tr[2]/td[2]//a/text()').extract_first()    
         release_year = int(release_year[-4:])
         genre = top_table.xpath('.//tr[3]/td//b/text()').extract_first() 
         MPAArating = top_table.xpath('.//tr[4]/td[1]/b/text()').extract_first()    
-        production_budget = top_table.xpath('.//tr[4]/td[2]/b/text()').extract_first()  
+        production_budget = top_table.xpath('.//tr[4]/td[2]/b/text()').extract_first()
         series_temp = response.xpath('.//table[@cellpadding="5"]//tr/td//a/b/text()').extract() 
-        series = 'N/A'
+        series = 'No'
         for s in series_temp:
             if s.find('Series:') != -1:
                 series = s
@@ -70,4 +70,3 @@ class BoxofficemojoSpider(Spider):
         item['production_budget'] = production_budget
         item['series'] = series
         yield item
-        
