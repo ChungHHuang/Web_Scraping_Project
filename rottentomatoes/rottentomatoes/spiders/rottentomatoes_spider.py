@@ -57,13 +57,17 @@ class RottentomatoesSpider(Spider):
         reviews = response.xpath('//div[@class="row review_table_row"]')
 
         for review in reviews:
-            reviewer = review.xpath('//div[@class="col-sm-13 col-xs-24 col-sm-pull-4 critic_name"]/a/text()').extract_first() 
-            media = review.xpath('//div[@class="col-sm-13 col-xs-24 col-sm-pull-4 critic_name"]//em/text()').extract_first() 
+            reviewer = review.xpath('.//div[@class="col-sm-13 col-xs-24 col-sm-pull-4 critic_name"]/a/text()').extract_first().strip() 
+            media = review.xpath('.//div[@class="col-sm-13 col-xs-24 col-sm-pull-4 critic_name"]//em/text()').extract_first().strip() 
             context = review.xpath('.//div[@class="the_review"]/text()').extract_first().strip() 
-            if reviews.xpath('.//div[@class="review_icon icon small fresh"]'): 
+            if review.xpath('./div[2]/div').extract_first().find('fresh') != -1: 
                 fresh_rot = 'fresh'
             else:
                 fresh_rot = 'rotten'
+            if review.xpath('.//div[@class="small"]/text()').extract_first(): 
+                top_critic = True
+            else:
+                top_critic = False
 
             item = RottentomatoesItem()
             item['movie_url'] = movie_url
@@ -75,6 +79,7 @@ class RottentomatoesSpider(Spider):
             item['reviewer'] = reviewer
             item['media'] = media
             item['fresh_rot'] = fresh_rot
+            item['top_critic'] = top_critic
             yield item
 
 

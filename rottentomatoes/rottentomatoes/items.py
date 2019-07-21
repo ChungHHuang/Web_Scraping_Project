@@ -20,3 +20,4 @@ class RottentomatoesItem(scrapy.Item):
     reviewer = scrapy.Field()
     media = scrapy.Field()
     fresh_rot = scrapy.Field()
+    top_critic = scrapy.Field()
