@@ -110,6 +110,7 @@ plt.show()
 domestic_movie = boxoffice.loc[boxoffice.worldwide == boxoffice.domestic].loc[boxoffice.release_year!=2019].groupby('release_year').count()
 domestic_movie = domestic_movie.reset_index()
 domestic_movie.plot(kind='bar',x='release_year', y='domestic',color = 'g')
+plt.suptitle("Number of the top 100 domestic gross movies only released in US")
 plt.xlabel('Release Year')
 plt.ylabel('Number of movies only released in US')
 plt.show()
@@ -120,6 +121,7 @@ w_g2 = boxoffice[['release_year','worldwide','domestic']].loc[boxoffice.release_
 w_g2['international']= w_g2.worldwide-w_g2.domestic
 w_g2 = w_g2.drop('worldwide',1)
 w_g2.groupby(['release_year'])[['international','domestic']].sum().plot(kind='bar', stacked=True)
+plt.suptitle("Total worldwide gross from 1982 to 2018")
 plt.xlabel('Release Year')
 plt.ylabel('Total worldwide gross')
 plt.show()
@@ -134,7 +136,7 @@ sns.distplot(isnos_int["worldwide"], color="red", label="Non-series Movies")
 plt.suptitle("Comparison of worldwide gross (movies released internaionally)")
 plt.legend()
 plt.xlabel('log_10(Worldwide Gross)')
-
+plt.show()
 # Make two sample t-test
 #print(stats.ttest_ind(int_movie[int_movie.Is_series == True].worldwide,\
 #                    int_movie[int_movie.Is_series == False].worldwide))
@@ -167,11 +169,9 @@ int_profit = Merged_df.loc[Merged_df.worldwide != Merged_df.domestic][['name','I
 int_profit = int_profit.loc[int_profit.profit < 20]
 iss_profit = int_profit[int_profit.Is_series == True]
 isnos_profit = int_profit[int_profit.Is_series == False]
-############################################################################################
-# There is a strange bug in this plot, please check test.ipynb for the plot
-############################################################################################
 sns.distplot(iss_profit["profit"], color="skyblue", label="Series Movies")
 sns.distplot(isnos_profit["profit"], color="red", label="Non-series Movies")
+plt.suptitle("Comparison of worldwide profit (movies released internaionally)")
 plt.legend()
 #sns.boxplot(x='Is_series', y='profit', data=int_profit)
 plt.xlabel('Profit')
@@ -290,17 +290,20 @@ def sentiment_func(x):
 # polarity plot
 fresh = fresh_df.apply(sentiment_func, axis=1)
 fresh.plot.scatter('critic_score', 'polarity')
+plt.suptitle('Sentiment analysis of the reviews that given "Fresh"')
 plt.xlabel('Critic score')
 plt.show()
 
 rotten = rotten_df.apply(sentiment_func, axis=1)
 rotten.plot.scatter('critic_score', 'polarity')
+plt.suptitle('Sentiment analysis of the reviews that given "Rotten"')
 plt.xlabel('Critic score')
 plt.show()
 
 # Correlation of score from critics and score from audience
 g = sns.lmplot("critic_score", "aud_score", RT)
 g.set(ylim=(40, 105),xlim=(40,105))
+plt.suptitle('Correlation of score from critics and score from audience')
 plt.xlabel('Critic score')
 plt.ylabel('Audience score')
 plt.show()
